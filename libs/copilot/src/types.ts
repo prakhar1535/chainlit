@@ -10,7 +10,9 @@ export interface IWidgetConfig {
   themeColor?: string | undefined;
   hideFeedback?: boolean;
   avatarUrl?: string | undefined;
-  fontColor?: string | undefined
+  fontColor?: string | undefined;
+  status?: boolean;
+  initialMessage?: string;
   button?: {
     containerId?: string;
     imageUrl?: string;

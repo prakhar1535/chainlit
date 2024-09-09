@@ -3,7 +3,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { toast } from 'sonner';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Alert, Box } from '@mui/material';
+import { Alert, Box, Typography } from '@mui/material';
 
 import { ErrorBoundary } from '@chainlit/app/src/components/atoms/ErrorBoundary';
 import ScrollContainer from '@chainlit/app/src/components/molecules/messages/ScrollContainer';
@@ -14,6 +14,7 @@ import WelcomeScreen from '@chainlit/app/src/components/organisms/chat/welcomeSc
 import { useUpload } from '@chainlit/app/src/hooks';
 import { IAttachment, attachmentsState } from '@chainlit/app/src/state/chat';
 import {
+  IStep,
   threadHistoryState,
   useChatData,
   useChatInteract,
@@ -25,21 +26,55 @@ import { ElementSideView } from 'components/ElementSideView';
 import { InputBox } from 'components/InputBox';
 
 import Messages from './messages';
+
 interface Props {
   themeColor: string;
-  hideFeedback: boolean
-  fontColor: string
+  hideFeedback: boolean;
+  fontColor: string;
+  initialMessage: string;
+  status: false;
 }
-const Chat:React.FC<Props> = ({themeColor, hideFeedback, fontColor}) => {
+const Chat: React.FC<Props> = ({
+  themeColor,
+  hideFeedback,
+  fontColor,
+  initialMessage,
+  status
+}) => {
   const { config } = useConfig();
   const setAttachments = useSetRecoilState(attachmentsState);
   const setThreads = useSetRecoilState(threadHistoryState);
   const [sideViewElement, setSideViewElement] = useRecoilState(sideViewState);
   const [autoScroll, setAutoScroll] = useState(true);
   const { error, disabled, callFn } = useChatData();
-  const { uploadFile } = useChatInteract();
+  const { uploadFile, sendMessage } = useChatInteract();
   const uploadFileRef = useRef(uploadFile);
+  const initialMessageSentRef = useRef(false);
 
+  useEffect(() => {
+    if (initialMessage && !initialMessageSentRef.current && status) {
+      const message: IStep = {
+        threadId: '',
+        id: uuidv4(),
+        name: 'Assistant',
+        type: 'assistant_message',
+        output: initialMessage,
+        createdAt: new Date().toISOString()
+      };
+      const sendInitialMessage = async () => {
+        try {
+          await sendMessage(message, []);
+          initialMessageSentRef.current = true;
+        } catch (error: any) {
+          console.error('Failed to send initial message:', error);
+          toast.error(
+            'Failed to send initial message. Please try refreshing the page.'
+          );
+        }
+      };
+      sendInitialMessage();
+    }
+  }, [initialMessage, sendMessage]);
   const fileSpec = useMemo(
     () => ({
       max_size_mb:
@@ -166,7 +201,6 @@ const Chat:React.FC<Props> = ({themeColor, hideFeedback, fontColor}) => {
       width="100%"
       flexGrow={1}
       overflow="auto"
-   
     >
       {upload ? (
         <>
@@ -207,16 +241,32 @@ const Chat:React.FC<Props> = ({themeColor, hideFeedback, fontColor}) => {
           >
             <WelcomeScreen hideLogo />
             <Box my={1} />
-            <Messages  fontColor={fontColor} hideFeedback={hideFeedback} themeColor={themeColor}/>
+            <Messages
+              fontColor={fontColor}
+              hideFeedback={hideFeedback}
+              themeColor={themeColor}
+            />
           </ScrollContainer>
-          <InputBox
-            fileSpec={fileSpec}
-            onFileUpload={onFileUpload}
-            onFileUploadError={onFileUploadError}
-            autoScroll={autoScroll}
-            setAutoScroll={setAutoScroll}
-            themeColor={themeColor}
-          />
+          {status ? (
+            <InputBox
+              fileSpec={fileSpec}
+              onFileUpload={onFileUpload}
+              onFileUploadError={onFileUploadError}
+              autoScroll={autoScroll}
+              setAutoScroll={setAutoScroll}
+              themeColor={themeColor}
+            />
+          ) : (
+            <Typography
+              sx={{
+                alignSelf: 'center',
+                textAlign: 'center',
+                marginBottom: '20px'
+              }}
+            >
+              There is some payment issue please contact administrator
+            </Typography>
+          )}
         </ErrorBoundary>
       </Box>
       <ElementSideView

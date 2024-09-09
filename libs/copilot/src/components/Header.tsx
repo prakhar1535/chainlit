@@ -1,29 +1,38 @@
+import { IWidgetConfig } from 'types';
+
 import { Stack } from '@mui/material';
 
 import ChatProfiles from './ChatProfiles';
 import NewChatButton from './NewChatButton';
-import { IWidgetConfig } from 'types';
 
 interface headerProps {
-  themeColor: string
-  avatarUrl?: string
+  themeColor: string;
+  avatarUrl?: string;
 }
-const Header:React.FC<headerProps> = ({themeColor, avatarUrl}): JSX.Element => (
+const Header: React.FC<headerProps> = ({
+  themeColor,
+  avatarUrl
+}): JSX.Element => (
   <Stack
     px={2}
     py={1.5}
     direction="row"
     alignItems="center"
     justifyContent="space-between"
-    bgcolor={themeColor !== "" ? themeColor : "background.paper"}
+    bgcolor={themeColor !== '' ? themeColor : 'background.paper'}
   >
     <Stack direction="row" alignItems="center" spacing={0.5}>
       {/* <Logo style={{ maxHeight: '25px' }} /> */}
-      
+
       <img
-        src={avatarUrl !== "" ? avatarUrl : "https://res.cloudinary.com/dvv44upa0/image/upload/v1724088690/xvvolyzavi6vrxg96a0a.png"}
+        src={
+          avatarUrl !== ''
+            ? avatarUrl
+            : 'https://res.cloudinary.com/dvv44upa0/image/upload/v1724088690/xvvolyzavi6vrxg96a0a.png'
+        }
         style={{
-          maxHeight: '25px'
+          maxHeight: '25px',
+          borderRadius: '50%'
         }}
       />
       {/* <IconButton onClick={() => setExpanded(!expanded)}>

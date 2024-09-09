@@ -14,7 +14,7 @@ import {
 import { AccentButton, RegularButton } from 'components/atoms/buttons';
 import { Translator } from 'components/i18n';
 
-import PencilIcon from 'assets/pencil';
+// import PencilIcon from 'assets/pencil';
 
 interface Props {
   message: IStep;
@@ -75,7 +75,7 @@ export default function UserMessage({
             onClick={() => setIsEditing(true)}
             disabled={disabled}
           >
-            <PencilIcon sx={{ height: 16, width: 16 }} />
+            {/* <PencilIcon sx={{ height: 16, width: 16 }} /> */}
           </IconButton>
         )}
         <Box
@@ -83,8 +83,9 @@ export default function UserMessage({
             px: 2.5,
             position: 'relative',
             borderRadius: '1.5rem',
-            backgroundColor: 'background.paper',
+            backgroundColor: '#f1f1f1',
             width: isEditing ? '100%' : 'auto',
+
             maxWidth: isEditing ? '100%' : '70%',
             flexGrow: isEditing ? 1 : 0,
             ml: isEditable ? 'default' : 'auto'

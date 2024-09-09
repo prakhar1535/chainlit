@@ -32,7 +32,7 @@ interface Props {
   scorableRun?: IStep;
   themeColor: string;
   hideFeedback: boolean;
-  fontColor: string
+  fontColor: string;
 }
 
 const Message = memo(
@@ -135,7 +135,7 @@ const Message = memo(
                       allowHtml={allowHtml}
                       latex={latex}
                       style={{
-                        color: fontColor !== "" ? fontColor : "unset"
+                        color: fontColor !== '' ? fontColor : 'unset'
                       }}
                     />
                   </UserMessage>
@@ -144,7 +144,7 @@ const Message = memo(
                 <Stack
                   direction="row"
                   gap="1rem"
-                  width="fit-content"
+                  width="80%"
                   className="ai-message"
                 >
                   {!isStep || !indent ? (
@@ -179,7 +179,10 @@ const Message = memo(
                       {actions?.length ? (
                         <MessageActions message={message} actions={actions} />
                       ) : null}
-                      <MessageButtons hideFeedback={hideFeedback} message={message} />
+                      <MessageButtons
+                        hideFeedback={hideFeedback}
+                        message={message}
+                      />
                     </Step>
                   ) : (
                     // Display an assistant message
@@ -190,13 +193,15 @@ const Message = memo(
                       position="relative"
                     >
                       <MessageContent
-                      style={
-                        {backgroundColor: themeColor !== themeColor ? "#ededed" : `${themeColor}`  ,
-                        padding: "12px",
-                        borderRadius: "6px",
-                        color: fontColor !== "" ? fontColor : "unset"}
-                      
-                      }
+                        style={{
+                          backgroundColor:
+                            themeColor !== themeColor
+                              ? '#ededed'
+                              : `${themeColor}`,
+                          padding: '12px',
+                          borderRadius: '6px',
+                          color: fontColor !== '' ? fontColor : 'unset'
+                        }}
                         elements={elements}
                         message={message}
                         preserveSize={
@@ -212,7 +217,11 @@ const Message = memo(
                         <MessageActions message={message} actions={actions} />
                       ) : null}
                       {scorableRun && isScorable ? (
-                        <MessageButtons hideFeedback={hideFeedback} message={message} run={scorableRun} />
+                        <MessageButtons
+                          hideFeedback={hideFeedback}
+                          message={message}
+                          run={scorableRun}
+                        />
                       ) : null}
                     </Stack>
                   )}

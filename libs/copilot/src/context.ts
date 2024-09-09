@@ -2,6 +2,8 @@ import { createContext } from 'react';
 
 interface IWidgetContext {
   accessToken?: string;
+  initialMessage?: string;
+  status?: boolean | undefined;
 }
 
 const defaultContext = {

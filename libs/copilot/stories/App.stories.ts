@@ -16,23 +16,53 @@ const meta = {
 } satisfies Meta<typeof AppWrapper>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
-
+type Story = StoryObj<typeof AppWrapper>;
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Primary: Story = {
   args: {
     widgetConfig: {
-      chainlitServer: 'http://localhost:8000',
+      chainlitServer: 'http://0.0.0.0:8066/chainlit',
       theme: 'light',
-      popoverBackground: 'red'
+      fontFamily: '"Nunito Sans"',
+      themeColor: 'blue',
+      fontColor: 'white',
+      chatBotID: 'b0171ab3-4b52-43e5-9742-cba4fb70a9f4',
+      status: false,
+      initialMessage: 'Hey, how are you?'
     }
-  }
+  },
+  loaders: [
+    async () => {
+      try {
+        const response = await fetch(
+          'http://backend.galadon.jeemstudio.com/get-sessions',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              chatbotId: 'b0171ab3-4b52-43e5-9742-cba4fb70a9f4'
+            })
+          }
+        );
+        const data = await response.json();
+        return { initialMessage: data.initialMessage, status: data.status };
+      } catch (error) {
+        console.error('Error fetching initial message:', error);
+        return {
+          initialMessage: 'Failed to load initial message',
+          status: 'error'
+        };
+      }
+    }
+  ]
 };
 
 export const Secondary: Story = {
   args: {
     widgetConfig: {
-      chainlitServer: 'http://localhost:8000',
+      chainlitServer: 'http://0.0.0.0:8066/chainlit',
       theme: 'dark',
       fontFamily: '"Nunito Sans"',
 

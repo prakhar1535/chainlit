@@ -13,6 +13,7 @@ import {
   IStep,
   ITasklistElement,
   IUser,
+  IWidgetConfig,
   ThreadHistory
 } from './types';
 import { groupByDate } from './utils/group';
@@ -21,7 +22,10 @@ export interface ISession {
   socket: Socket;
   error?: boolean;
 }
-
+export const widgetConfigState = atom<IWidgetConfig | null>({
+  key: 'widgetConfigState',
+  default: null
+});
 export const threadIdToResumeState = atom<string | undefined>({
   key: 'ThreadIdToResume',
   default: undefined

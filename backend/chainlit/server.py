@@ -341,7 +341,24 @@ def get_user_facing_url(url: URL):
 @router.get("/auth/config")
 async def auth(request: Request):
     return get_configuration()
+@router.post("/chatbot")
+async def chatbot_endpoint(request: Request):
+    body = await request.json()
+    chatbot_id = body.get("chatbotId")
+    
+    if not chatbot_id:
+        raise HTTPException(status_code=400, detail="chatbotId is required")
 
+    # Here you can add your logic to handle the chatbot request
+    # For example, you might want to fetch chatbot data from a database
+    # or perform some initialization based on the chatbot ID
+
+    # For now, we'll just return a simple response
+    return {
+        "message": f"Chatbot initialized with ID: {chatbot_id}",
+        "systemPrompt": "Default system prompt",
+        "initialMessage": "Hello! How can I assist you today?"
+    }
 
 @router.post("/login")
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):

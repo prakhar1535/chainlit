@@ -16,7 +16,7 @@ export default function WaterMark() {
   return (
     <Stack mx="auto" className="watermark">
       <a
-        href="https://github.com/"
+        href="https://www.galadon.com/"
         target="_blank"
         style={{
           display: 'flex',

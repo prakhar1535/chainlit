@@ -1,12 +1,13 @@
 import jwt_decode from 'jwt-decode';
 import { useContext, useEffect } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { ChainlitContext } from 'src/context';
 import {
   accessTokenState,
   authState,
   threadHistoryState,
-  userState
+  userState,
+  widgetConfigState
 } from 'src/state';
 import { IAuthConfig, IUser } from 'src/types';
 import { getToken, removeToken, setToken } from 'src/utils/token';
@@ -20,13 +21,28 @@ export const useAuth = () => {
   const { data, isLoading } = useApi<IAuthConfig>(
     authConfig ? null : '/auth/config'
   );
+
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
   const setThreadHistory = useSetRecoilState(threadHistoryState);
-
+  const widgetConfig = useRecoilValue(widgetConfigState);
   useEffect(() => {
     if (!data) return;
     setAuthConfig(data);
-  }, [data, setAuthConfig]);
+    console.log(widgetConfig?.chatBotID);
+
+    if (widgetConfig?.chatBotID) {
+      apiClient
+        .post('/chatbot', { chatbotId: widgetConfig.chatBotID })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Chatbot data:', data);
+          // Handle the chatbot data as needed
+        })
+        .catch((error) => {
+          console.error('Error fetching chatbot data:', error);
+        });
+    }
+  }, [setAuthConfig, widgetConfig, apiClient]);
 
   const isReady = !!(!isLoading && authConfig);
 
@@ -36,6 +52,7 @@ export const useAuth = () => {
     removeToken();
     setAccessToken('');
     setThreadHistory(undefined);
+    console.log(widgetConfig?.chatBotID, 'chatBotID');
     if (reload) {
       window.location.reload();
     }

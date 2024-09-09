@@ -32,9 +32,12 @@ const MessageAvatar = ({ author }: Props) => {
   // }, [apiClient, selectedChatProfile, config, author]);
 
   return (
-    <span className={`message-avatar`} style={{
-      paddingTop: "12px"
-    }}> 
+    <span
+      className={`message-avatar`}
+      style={{
+        paddingTop: '12px'
+      }}
+    >
       <Tooltip title={author}>
         <Box
           component={'img'}
@@ -43,6 +46,7 @@ const MessageAvatar = ({ author }: Props) => {
           }
           sx={{
             borderRadius: '10000px',
+
             width: '1.5rem',
             height: '1.5rem'
           }}

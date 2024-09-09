@@ -30,7 +30,7 @@ export default function NewChatButton() {
         title={<Translator path="components.molecules.newChatButton.newChat" />}
       >
         <IconButton edge="end" id="new-chat-button" onClick={handleClickOpen}>
-          <SquarePenIcon sx={{ width: 20, height: 20 }} />
+          <SquarePenIcon sx={{ width: 20, height: 20, color: 'white' }} />
         </IconButton>
       </Tooltip>
       <NewChatDialog

@@ -30,18 +30,19 @@ export default function App({ widgetConfig }: Props) {
   const { setAccessToken } = useAuth();
   const [settings, setSettings] = useRecoilState(settingsState);
   const [theme, setTheme] = useState<Theme | null>(null);
+  const [currentTheme, setCurrentTheme] = useState(widgetConfig.theme);
   const { i18n } = useTranslation();
   const languageInUse = navigator.language || 'en-US';
 
   useEffect(() => {
     setAccessToken(widgetConfig.accessToken);
-  }, [widgetConfig.accessToken]);
+  }, [widgetConfig.accessToken, setAccessToken]);
 
   useEffect(() => {
     if (!config) return;
-    const themeVariant = widgetConfig.theme || config.ui.theme.default;
+    const themeVariant = currentTheme || config.ui.theme.default;
     window.theme = config.ui.theme;
-    widgetConfig.theme = themeVariant;
+    setCurrentTheme(themeVariant);
     setSettings((old) => ({
       ...old,
       theme: themeVariant
@@ -93,7 +94,15 @@ export default function App({ widgetConfig }: Props) {
       .catch((err) => {
         console.error(err);
       });
-  }, [config]);
+  }, [
+    config,
+    currentTheme,
+    settings.theme,
+    widgetConfig.fontFamily,
+    apiClient,
+    accessToken,
+    i18n
+  ]);
 
   if (!config || !theme) {
     return null;

@@ -21,12 +21,15 @@ export default function Widget({ config }: Props) {
   const themeColor = config.themeColor || undefined;
   const avatarUrl = config.avatarUrl || undefined;
   const fontColor = config.fontColor || undefined;
-  const hideFeedback = config.hideFeedback || undefined
+  const hideFeedback = config.hideFeedback || undefined;
+  const initialMessage = config.initialMessage || '';
+  const status = config.status || false;
   const style = {
     width: customStyle.width || customStyle.size || '60px',
     height: buttonHeight,
     bgcolor: config.themeColor || '#F80061',
     color: customStyle.color || 'white',
+
     '&:hover': {
       bgcolor: config.themeColor || '#DA0054'
     },
@@ -42,13 +45,15 @@ export default function Widget({ config }: Props) {
   return (
     <>
       <PopOver
-        fontColor={fontColor || ""}
+        status={status || false}
+        fontColor={fontColor || ''}
         anchorEl={anchorEl}
         buttonHeight={buttonHeight}
         popoverBackground={popoverBackground ? popoverBackground : ''}
-        themeColor={themeColor ? themeColor : ""}
-        avatarUrl={avatarUrl ? avatarUrl : ""}
+        themeColor={themeColor ? themeColor : ''}
+        avatarUrl={avatarUrl ? avatarUrl : ''}
         hideFeedback={hideFeedback || false}
+        initialMessage={initialMessage || ''}
       />
       <Fab
         disableRipple

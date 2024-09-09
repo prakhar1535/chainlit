@@ -14,7 +14,7 @@ import WelcomeScreen from '@chainlit/app/src/components/organisms/chat/welcomeSc
 import { useUpload } from '@chainlit/app/src/hooks';
 import { IAttachment, attachmentsState } from '@chainlit/app/src/state/chat';
 import {
-  IStep,
+  // IStep,
   threadHistoryState,
   useChatData,
   useChatInteract,
@@ -38,7 +38,7 @@ const Chat: React.FC<Props> = ({
   themeColor,
   hideFeedback,
   fontColor,
-  initialMessage,
+  // initialMessage,
   status
 }) => {
   const { config } = useConfig();
@@ -47,34 +47,34 @@ const Chat: React.FC<Props> = ({
   const [sideViewElement, setSideViewElement] = useRecoilState(sideViewState);
   const [autoScroll, setAutoScroll] = useState(true);
   const { error, disabled, callFn } = useChatData();
-  const { uploadFile, sendMessage } = useChatInteract();
+  const { uploadFile } = useChatInteract();
   const uploadFileRef = useRef(uploadFile);
-  const initialMessageSentRef = useRef(false);
+  // const initialMessageSentRef = useRef(false);
 
-  useEffect(() => {
-    if (initialMessage && !initialMessageSentRef.current && status) {
-      const message: IStep = {
-        threadId: '',
-        id: uuidv4(),
-        name: 'Assistant',
-        type: 'assistant_message',
-        output: initialMessage,
-        createdAt: new Date().toISOString()
-      };
-      const sendInitialMessage = async () => {
-        try {
-          await sendMessage(message, []);
-          initialMessageSentRef.current = true;
-        } catch (error: any) {
-          console.error('Failed to send initial message:', error);
-          toast.error(
-            'Failed to send initial message. Please try refreshing the page.'
-          );
-        }
-      };
-      sendInitialMessage();
-    }
-  }, [initialMessage, sendMessage]);
+  // useEffect(() => {
+  //   if (initialMessage && !initialMessageSentRef.current && status) {
+  //     const message: IStep = {
+  //       threadId: '',
+  //       id: uuidv4(),
+  //       name: 'Assistant',
+  //       type: 'assistant_message',
+  //       output: initialMessage,
+  //       createdAt: new Date().toISOString()
+  //     };
+  //     const sendInitialMessage = async () => {
+  //       try {
+  //         await sendMessage(message, []);
+  //         initialMessageSentRef.current = true;
+  //       } catch (error: any) {
+  //         console.error('Failed to send initial message:', error);
+  //         toast.error(
+  //           'Failed to send initial message. Please try refreshing the page.'
+  //         );
+  //       }
+  //     };
+  //     sendInitialMessage();
+  //   }
+  // }, [initialMessage, sendMessage]);
   const fileSpec = useMemo(
     () => ({
       max_size_mb:
